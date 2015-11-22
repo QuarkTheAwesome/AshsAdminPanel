@@ -13,7 +13,7 @@ import com.mumfrey.liteloader.core.LiteLoader;
 
 public class LiteModAAP implements Tickable {
 
-	private static KeyBinding guiKeyBinding = new KeyBinding("key.aap.activate", Keyboard.KEY_F12, "key.categories.litemods");
+	private static KeyBinding guiKeyBinding = new KeyBinding("Open AAP", Keyboard.KEY_F12, "key.categories.litemods");
 	public String debugLine = "Hey hey hey! AAP is running!";
 	
 	@Override
