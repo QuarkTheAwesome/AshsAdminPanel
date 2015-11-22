@@ -1,6 +1,8 @@
 package ml.QuarkTheAwesome.AAP.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.input.Keyboard;
 
@@ -18,17 +20,19 @@ public class GuiMainScreen extends GuiScreen {
 	
 	private GuiElementOffenceList list;
 	
+	private GuiElementComboBox combo;
+	
 	private GuiTextField searchBar;
+	private GuiTextField descriptionBar;
+	private GuiTextField timeBar;
+	private GuiTextField actionBar;
+	private GuiTextField actionArgument1;
+	private GuiTextField actionArgument2;
+	
+	public GuiMainScreen() {}
 	
 	/**
-	 * Constructor. Sets up our button.
-	 */
-	public GuiMainScreen() {
-
-	}
-	
-	/**
-	 * Add our button and whatnot into the list of stuff to be rendered.
+	 * Sets up all GUI elements. Lots'a magic numbers here.
 	 */
 	public void initGui() {
 		/*SECTION: CONSTRUCTOR STUFF MOVED*/
@@ -40,6 +44,15 @@ public class GuiMainScreen extends GuiScreen {
 		searchBar.setMaxStringLength(16);
 		searchBar.setEnableBackgroundDrawing(true);
 		searchBar.setText("");
+		
+		//TODO: debug items
+		List<GuiElementComboBoxItem> comboItems = new ArrayList<GuiElementComboBoxItem>();
+		comboItems.add(new GuiElementComboBoxItem("1", "1st greif"));
+		comboItems.add(new GuiElementComboBoxItem("1", "greif > 1000"));
+		comboItems.add(new GuiElementComboBoxItem("1", "4th chat abuse"));
+		comboItems.add(new GuiElementComboBoxItem("1", "hacked client"));
+		
+		combo = new GuiElementComboBox(this.mc, 20 + list.width + 20 + mc.fontRendererObj.getStringWidth("Offence:") + 2, 20, comboItems);
 		
 		btnPrevPage = new GuiButton(101, 18, list.height + 23, 15, 20, "<");
 		btnNextPage = new GuiButton(102, (18 + list.width - 15 /*widthIn*/), list.height + 23, 15, 20, ">");
@@ -86,6 +99,8 @@ public class GuiMainScreen extends GuiScreen {
 		btnNextPage.drawButton(this.mc, mouseX, mouseY);
 		list.draw(this.mc, mouseX, mouseY);
 		searchBar.drawTextBox();
+		this.mc.fontRendererObj.drawString("Offence:", 20 + list.width + 20, 21, 0xFFFFFFFF);
+		combo.draw(this.mc, mouseX, mouseY);
 	}
 	
 	/**
@@ -119,6 +134,7 @@ public class GuiMainScreen extends GuiScreen {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		list.onClick(this.mc, mouseX, mouseY, mouseButton);
 		searchBar.mouseClicked(mouseX, mouseY, mouseButton);
+		combo.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 	
 	protected void keyTyped(char keyTyped, int keyCode) throws IOException {
