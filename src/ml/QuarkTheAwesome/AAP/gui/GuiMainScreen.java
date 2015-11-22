@@ -1,5 +1,7 @@
 package ml.QuarkTheAwesome.AAP.gui;
 
+import java.io.IOException;
+
 import com.mumfrey.liteloader.util.log.LiteLoaderLogger;
 
 import ml.QuarkTheAwesome.AAP.LiteModAAP;
@@ -53,6 +55,7 @@ public class GuiMainScreen extends GuiScreen {
 		this.buttonList.clear();
 		this.buttonList.add(btnPrevPage);
 		this.buttonList.add(btnNextPage);
+		btnPrevPage.enabled = false;
 	}
 	
 	/**
@@ -78,12 +81,25 @@ public class GuiMainScreen extends GuiScreen {
 		if (btn == btnPrevPage) {
 			if (list.page - 1 >= 0) {
 				list.page = list.page - 1;
+				if (!(list.page - 1 >= 0)) {
+					btnPrevPage.enabled = false;
+				}
+				btnNextPage.enabled = true;
 			}
 		} 
 		if (btn == btnNextPage) {
 			if (list.page + 1 <= list.maxPages) {
 				list.page = list.page + 1;	
+				if (!(list.page + 1 <= list.maxPages)) {
+					btnNextPage.enabled = false;
+				}
+				btnPrevPage.enabled = true;
 			}
 		}
+	}
+	
+	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+		super.mouseClicked(mouseX, mouseY, mouseButton);
+		list.onClick(this.mc, mouseX, mouseY, mouseButton);
 	}
 }

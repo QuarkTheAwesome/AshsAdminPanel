@@ -14,6 +14,8 @@ public class GuiElementOffenceList extends Gui {
 	 */
 	public List<GuiElementOffenceListItem> itemList = new ArrayList<GuiElementOffenceListItem>();
 	
+	private GuiElementOffenceListItem clickedItem;
+	
 	/**
 	 * Items to fit on a page. Zero-based.
 	 */
@@ -52,7 +54,29 @@ public class GuiElementOffenceList extends Gui {
 				break;
 			}
 			//Flexibility! Too bad it's basically made useless by the ITEMS_PER_PAGE var.
+			//Unless I make a class extending GuiElementOffenceListItem... Ooh.
 			yOffset = yOffset + GuiElementOffenceListItem.HEIGHT;
+		}
+	}
+	protected void onClick(Minecraft mc, int mouseX, int mouseY, int mouseButton) {
+		int itemsChecked = 0;
+		int yOffset = 0;
+		for (int i = (page * ITEMS_PER_PAGE); i < itemList.size(); i++) {
+			if (itemsChecked <= ITEMS_PER_PAGE) { //check this item
+				if (mouseX >= x && mouseX <= x + itemList.get(i).WIDTH && mouseY >= y + yOffset && mouseY <= y + yOffset + itemList.get(i).HEIGHT) {
+					//That's a click on this item!!!
+					if (clickedItem != null) {
+						clickedItem.clicked = false;
+					}
+					clickedItem = itemList.get(i);
+					clickedItem.onClick(mouseButton);
+					break;
+				}
+				itemsChecked++;
+				yOffset = yOffset + itemList.get(i).HEIGHT;
+			} else {
+				break; //Not a click on us (we really should check for this earlier, but oh well
+			}
 		}
 	}
 }
