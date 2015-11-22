@@ -3,6 +3,7 @@
 	<name>AAP</name>
 	<comment></comment>
 	<projects>
+		<project>LiteLoader</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
