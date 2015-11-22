@@ -46,7 +46,7 @@ public class GuiElementOffenceList extends Gui {
 		int yOffset = 0;
 		for (int i = (page * ITEMS_PER_PAGE); i < itemList.size(); i++) {
 			
-			if (itemsDrawn <= ITEMS_PER_PAGE && i < itemList.size()) { //TODO if the last item is left off the list make it i >= ite...
+			if (itemsDrawn <= ITEMS_PER_PAGE && i < itemList.size()) {
 				itemList.get(i).drawXY(mc, x, y + yOffset, mouseX, mouseY);
 				itemsDrawn++;
 			} else {

@@ -2,30 +2,47 @@ package ml.QuarkTheAwesome.AAP.gui;
 
 import java.io.IOException;
 
+import org.lwjgl.input.Keyboard;
+
 import com.mumfrey.liteloader.util.log.LiteLoaderLogger;
 
 import ml.QuarkTheAwesome.AAP.LiteModAAP;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiTextField;
 
 public class GuiMainScreen extends GuiScreen {
-	/**
-	 * It's a test button right now, but I'll change it later.
-	 */
+	
 	private GuiButton btnPrevPage;
 	private GuiButton btnNextPage;
 	
 	private GuiElementOffenceList list;
 	
+	private GuiTextField searchBar;
+	
 	/**
 	 * Constructor. Sets up our button.
 	 */
 	public GuiMainScreen() {
+
+	}
+	
+	/**
+	 * Add our button and whatnot into the list of stuff to be rendered.
+	 */
+	public void initGui() {
+		/*SECTION: CONSTRUCTOR STUFF MOVED*/
+		Keyboard.enableRepeatEvents(true);
 		LiteLoaderLogger.info("Oh hai! This is GuiMainScreen.");
 		list = new GuiElementOffenceList(20, 20, this);
 		
+		searchBar = new GuiTextField(0, this.mc.fontRendererObj, this.width - 18 - 110 /*par5width*/, 18, 110 /*RANDOM GUESS!*/, 14 /*Another random guess*/);
+		searchBar.setMaxStringLength(16);
+		searchBar.setEnableBackgroundDrawing(true);
+		searchBar.setText("");
+		
 		btnPrevPage = new GuiButton(101, 18, list.height + 23, 15, 20, "<");
-		btnNextPage = new GuiButton(102, (18 + list.width - 15 /**widthIn**/), list.height + 23, 15, 20, ">");
+		btnNextPage = new GuiButton(102, (18 + list.width - 15 /*widthIn*/), list.height + 23, 15, 20, ">");
 		
 		//TODO: debug items
 		list.itemList.add(new GuiElementOffenceListItem("1Steven!", "Bob!", "WOOOAAAAHHHH"));
@@ -46,18 +63,17 @@ public class GuiMainScreen extends GuiScreen {
 		list.itemList.add(new GuiElementOffenceListItem("16Stevsfen!", "Bob!", "WOOOAAAAHHHH"));
 		list.itemList.add(new GuiElementOffenceListItem("17Stesafdve1n!", "Bob1!", "WOOOAA2AAHHHH"));
 		list.itemList.add(new GuiElementOffenceListItem("18St3sdfven!", "B3b!", "WOOOAA3AHHHH"));
-	}
-	
-	/**
-	 * Add our button and whatnot into the list of stuff to be rendered.
-	 */
-	public void initGui() {
+		
+		/*SECTION: ACTUAL initGUI stuff*/
 		this.buttonList.clear();
 		this.buttonList.add(btnPrevPage);
 		this.buttonList.add(btnNextPage);
 		btnPrevPage.enabled = false;
 	}
 	
+	public void onGuiClosed() {
+		Keyboard.enableRepeatEvents(false);
+	}
 	/**
 	 * Custom render loop. Useful for lots of things.
 	 */
@@ -69,6 +85,7 @@ public class GuiMainScreen extends GuiScreen {
 		this.mc.fontRendererObj.drawString((list.page + 1) + "/" + (list.maxPages + 1), 33, list.height + 23, 0xFFFFFFFF);
 		btnNextPage.drawButton(this.mc, mouseX, mouseY);
 		list.draw(this.mc, mouseX, mouseY);
+		searchBar.drawTextBox();
 	}
 	
 	/**
@@ -101,5 +118,14 @@ public class GuiMainScreen extends GuiScreen {
 	protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
 		super.mouseClicked(mouseX, mouseY, mouseButton);
 		list.onClick(this.mc, mouseX, mouseY, mouseButton);
+		searchBar.mouseClicked(mouseX, mouseY, mouseButton);
+	}
+	
+	protected void keyTyped(char keyTyped, int keyCode) throws IOException {
+		if (keyCode == 1) {
+			this.mc.displayGuiScreen((GuiScreen)null);
+			this.mc.setIngameFocus();
+		}
+		searchBar.textboxKeyTyped(keyTyped, keyCode);
 	}
 }
