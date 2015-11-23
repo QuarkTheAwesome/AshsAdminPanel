@@ -17,6 +17,10 @@ public class GuiMainScreen extends GuiScreen {
 	
 	private GuiButton btnPrevPage;
 	private GuiButton btnNextPage;
+	private GuiButton btnBan;
+	private GuiButton btnMute;
+	private GuiButton btnKick;
+	private GuiButton btnWarn;
 	
 	private GuiElementOffenceList list;
 	
@@ -40,10 +44,45 @@ public class GuiMainScreen extends GuiScreen {
 		LiteLoaderLogger.info("Oh hai! This is GuiMainScreen.");
 		list = new GuiElementOffenceList(20, 20, this);
 		
+		btnBan = new GuiButton(103, 20 + list.width + 20, 40, 50, 20, "New Ban");
+		btnMute = new GuiButton(103, 20 + list.width + 20 + 50 + 10, 40, 50, 20, "New Mute");
+		btnKick = new GuiButton(103, 20 + list.width + 20 + 50 + 10 + 50 + 10, 40, 50, 20, "New Kick");
+		btnWarn = new GuiButton(103, 20 + list.width + 20 + 50 + 10 + 50 + 10 + 50 + 10, 40, 50, 20, "New Ban");
+		
 		searchBar = new GuiTextField(0, this.mc.fontRendererObj, this.width - 18 - 110 /*par5width*/, 18, 110 /*RANDOM GUESS!*/, 14 /*Another random guess*/);
 		searchBar.setMaxStringLength(16);
 		searchBar.setEnableBackgroundDrawing(true);
 		searchBar.setText("");
+		
+		descriptionBar = new GuiTextField(1, this.mc.fontRendererObj, 20 + list.width + 20, 70, 270, 14);
+		descriptionBar.setMaxStringLength(100);
+		descriptionBar.setEnableBackgroundDrawing(true);
+		descriptionBar.setText("");
+		descriptionBar.setEnabled(true);
+		
+		timeBar = new GuiTextField(2, this.mc.fontRendererObj, 20 + list.width + 20, 90, 270, 14);
+		timeBar.setMaxStringLength(50);
+		timeBar.setEnableBackgroundDrawing(true);
+		timeBar.setText("");
+		timeBar.setEnabled(true);
+		
+		actionBar = new GuiTextField(3, this.mc.fontRendererObj, 20 + list.width + 20, 110, 50, 14);
+		actionBar.setMaxStringLength(9);
+		actionBar.setEnableBackgroundDrawing(true);
+		actionBar.setText("");
+		actionBar.setEnabled(true);
+		
+		actionArgument1 = new GuiTextField(4, this.mc.fontRendererObj, 20 + list.width + 20 + actionBar.getWidth() + 20, 110, 110, 14);
+		actionArgument1.setMaxStringLength(16);
+		actionArgument1.setEnableBackgroundDrawing(true);
+		actionArgument1.setText("");
+		actionArgument1.setEnabled(true);
+		
+		actionArgument2 = new GuiTextField(4, this.mc.fontRendererObj, 20 + list.width + 20 + actionBar.getWidth() + actionArgument1.getWidth() + 40, 110, 105, 14);
+		actionArgument2.setMaxStringLength(100);
+		actionArgument2.setEnableBackgroundDrawing(true);
+		actionArgument2.setText("");
+		actionArgument2.setEnabled(true);
 		
 		//TODO: debug items
 		List<GuiElementComboBoxItem> comboItems = new ArrayList<GuiElementComboBoxItem>();
@@ -81,6 +120,10 @@ public class GuiMainScreen extends GuiScreen {
 		this.buttonList.clear();
 		this.buttonList.add(btnPrevPage);
 		this.buttonList.add(btnNextPage);
+		this.buttonList.add(btnBan);
+		this.buttonList.add(btnKick);
+		this.buttonList.add(btnMute);
+		this.buttonList.add(btnWarn);
 		btnPrevPage.enabled = false;
 	}
 	
@@ -97,8 +140,21 @@ public class GuiMainScreen extends GuiScreen {
 		btnPrevPage.drawButton(this.mc, mouseX, mouseY);
 		this.mc.fontRendererObj.drawString((list.page + 1) + "/" + (list.maxPages + 1), 33, list.height + 23, 0xFFFFFFFF);
 		btnNextPage.drawButton(this.mc, mouseX, mouseY);
+		
 		list.draw(this.mc, mouseX, mouseY);
+		
+		btnBan.drawButton(mc, mouseX, mouseY);
+		btnMute.drawButton(mc, mouseX, mouseY);
+		btnKick.drawButton(mc, mouseX, mouseY);
+		btnWarn.drawButton(mc, mouseX, mouseY);
+		
 		searchBar.drawTextBox();
+		descriptionBar.drawTextBox();
+		timeBar.drawTextBox();
+		actionBar.drawTextBox();
+		actionArgument1.drawTextBox();
+		actionArgument2.drawTextBox();
+		
 		this.mc.fontRendererObj.drawString("Offence:", 20 + list.width + 20, 21, 0xFFFFFFFF);
 		combo.draw(this.mc, mouseX, mouseY);
 	}
@@ -135,6 +191,11 @@ public class GuiMainScreen extends GuiScreen {
 		list.onClick(this.mc, mouseX, mouseY, mouseButton);
 		searchBar.mouseClicked(mouseX, mouseY, mouseButton);
 		combo.mouseClicked(mouseX, mouseY, mouseButton);
+		descriptionBar.mouseClicked(mouseX, mouseY, mouseButton);
+		timeBar.mouseClicked(mouseX, mouseY, mouseButton);
+		actionBar.mouseClicked(mouseX, mouseY, mouseButton);
+		actionArgument1.mouseClicked(mouseX, mouseY, mouseButton);
+		actionArgument2.mouseClicked(mouseX, mouseY, mouseButton);
 	}
 	
 	protected void keyTyped(char keyTyped, int keyCode) throws IOException {
@@ -143,5 +204,10 @@ public class GuiMainScreen extends GuiScreen {
 			this.mc.setIngameFocus();
 		}
 		searchBar.textboxKeyTyped(keyTyped, keyCode);
+		descriptionBar.textboxKeyTyped(keyTyped, keyCode);
+		timeBar.textboxKeyTyped(keyTyped, keyCode);
+		actionBar.textboxKeyTyped(keyTyped, keyCode);
+		actionArgument1.textboxKeyTyped(keyTyped, keyCode);
+		actionArgument2.textboxKeyTyped(keyTyped, keyCode);
 	}
 }
